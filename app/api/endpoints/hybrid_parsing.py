@@ -16,21 +16,25 @@ router = APIRouter()
             summary="混合解析单一视频接口/Hybrid parsing single video endpoint")
 async def hybrid_parsing_single_video(request: Request,
                                       url: str = Query(example="https://v.douyin.com/L4FJNR3/"),
-                                      minimal: bool = Query(default=False)):
+                                      minimal: bool = Query(default=False),
+                                      cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
-    - 该接口用于解析抖音/TikTok单一视频的数据。
+    - 该接口用于解析抖音/TikTok/Bilibili单一视频的数据。
     ### 参数:
     - `url`: 视频链接、分享链接、分享文本。
+    - `minimal`: 是否返回最小数据，默认为False。
+    - `cookie`: 可选Cookie，覆盖配置文件。
     ### 返回:
     - `data`: 视频数据。
 
     # [English]
     ### Purpose:
-    - This endpoint is used to parse data of a single Douyin/TikTok video.
+    - This endpoint is used to parse data of a single Douyin/TikTok/Bilibili video.
     ### Parameters:
     - `url`: Video link, share link, or share text.
+    - `minimal`: Whether to return minimal data, default is False.
     ### Returns:
     - `data`: Video data.
 
@@ -39,7 +43,7 @@ async def hybrid_parsing_single_video(request: Request,
     """
     try:
         # 解析视频/Parse video
-        data = await HybridCrawler.hybrid_parsing_single_video(url=url, minimal=minimal)
+        data = await HybridCrawler.hybrid_parsing_single_video(url=url, minimal=minimal, cookie=cookie)
         # 返回数据/Return data
         return ResponseModel(code=200,
                              router=request.url.path,

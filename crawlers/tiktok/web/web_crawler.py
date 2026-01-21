@@ -97,9 +97,11 @@ class TikTokWebCrawler:
     """-------------------------------------------------------handler接口列表-------------------------------------------------------"""
 
     # 获取单个作品数据
-    async def fetch_one_video(self, itemId: str):
+    async def fetch_one_video(self, itemId: str, cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -113,9 +115,11 @@ class TikTokWebCrawler:
         return response
 
     # 获取用户的个人信息
-    async def fetch_user_profile(self, secUid: str, uniqueId: str):
+    async def fetch_user_profile(self, secUid: str, uniqueId: str, cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -129,9 +133,11 @@ class TikTokWebCrawler:
         return response
 
     # 获取用户的作品列表
-    async def fetch_user_post(self, secUid: str, cursor: int = 0, count: int = 35, coverFormat: int = 2):
+    async def fetch_user_post(self, secUid: str, cursor: int = 0, count: int = 35, coverFormat: int = 2, cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # proxies = {"http://": 'http://43.159.29.191:24144', "https://": 'http://43.159.29.191:24144'}
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
@@ -146,9 +152,11 @@ class TikTokWebCrawler:
         return response
 
     # 获取用户的点赞列表
-    async def fetch_user_like(self, secUid: str, cursor: int = 0, count: int = 30, coverFormat: int = 2):
+    async def fetch_user_like(self, secUid: str, cursor: int = 0, count: int = 30, coverFormat: int = 2, cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -180,9 +188,11 @@ class TikTokWebCrawler:
         return response
 
     # 获取用户的播放列表
-    async def fetch_user_play_list(self, secUid: str, cursor: int = 0, count: int = 30):
+    async def fetch_user_play_list(self, secUid: str, cursor: int = 0, count: int = 30, cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -196,9 +206,11 @@ class TikTokWebCrawler:
         return response
 
     # 获取用户的合辑列表
-    async def fetch_user_mix(self, mixId: str, cursor: int = 0, count: int = 30):
+    async def fetch_user_mix(self, mixId: str, cursor: int = 0, count: int = 30, cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -212,9 +224,11 @@ class TikTokWebCrawler:
         return response
 
     # 获取作品的评论列表
-    async def fetch_post_comment(self, aweme_id: str, cursor: int = 0, count: int = 20, current_region: str = ""):
+    async def fetch_post_comment(self, aweme_id: str, cursor: int = 0, count: int = 20, current_region: str = "", cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # proxies = {"http://": 'http://43.159.18.174:25263', "https://": 'http://43.159.18.174:25263'}
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
@@ -230,9 +244,11 @@ class TikTokWebCrawler:
 
     # 获取作品的评论回复列表
     async def fetch_post_comment_reply(self, item_id: str, comment_id: str, cursor: int = 0, count: int = 20,
-                                       current_region: str = ""):
+                                       current_region: str = "", cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -247,9 +263,11 @@ class TikTokWebCrawler:
         return response
 
     # 获取用户的粉丝列表
-    async def fetch_user_fans(self, secUid: str, count: int = 30, maxCursor: int = 0, minCursor: int = 0):
+    async def fetch_user_fans(self, secUid: str, count: int = 30, maxCursor: int = 0, minCursor: int = 0, cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -263,9 +281,11 @@ class TikTokWebCrawler:
         return response
 
     # 获取用户的关注列表
-    async def fetch_user_follow(self, secUid: str, count: int = 30, maxCursor: int = 0, minCursor: int = 0):
+    async def fetch_user_follow(self, secUid: str, count: int = 30, maxCursor: int = 0, minCursor: int = 0, cookie: str = ""):
         # 获取TikTok的实时Cookie
         kwargs = await self.get_tiktok_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:

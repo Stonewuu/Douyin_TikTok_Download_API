@@ -15,13 +15,15 @@ TikTokWebCrawler = TikTokWebCrawler()
             response_model=ResponseModel,
             summary="获取单个作品数据/Get single video data")
 async def fetch_one_video(request: Request,
-                            itemId: str = Query(example="7339393672959757570", description="作品id/Video id")):
+                            itemId: str = Query(example="7339393672959757570", description="作品id/Video id"),
+                            cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取单个作品数据
     ### 参数:
     - itemId: 作品id
+    - cookie: 可选Cookie
     ### 返回:
     - 作品数据
 
@@ -30,6 +32,7 @@ async def fetch_one_video(request: Request,
     - Get single video data
     ### Parameters:
     - itemId: Video id
+    - cookie: Optional Cookie
     ### Return:
     - Video data
 
@@ -37,7 +40,7 @@ async def fetch_one_video(request: Request,
     itemId = "7339393672959757570"
     """
     try:
-        data = await TikTokWebCrawler.fetch_one_video(itemId)
+        data = await TikTokWebCrawler.fetch_one_video(itemId, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -56,7 +59,8 @@ async def fetch_one_video(request: Request,
             summary="获取用户的个人信息/Get user profile")
 async def fetch_user_profile(request: Request,
                              uniqueId: str = Query(default="tiktok", description="用户uniqueId/User uniqueId"),
-                             secUid: str = Query(default="", description="用户secUid/User secUid"),):
+                             secUid: str = Query(default="", description="用户secUid/User secUid"),
+                             cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -64,7 +68,7 @@ async def fetch_user_profile(request: Request,
     ### 参数:
     - secUid: 用户secUid
     - uniqueId: 用户uniqueId
-    - secUid和uniqueId至少提供一个, 优先使用uniqueId, 也就是用户主页的链接中的用户名。
+    - cookie: 可选Cookie
     ### 返回:
     - 用户的个人信息
 
@@ -74,7 +78,7 @@ async def fetch_user_profile(request: Request,
     ### Parameters:
     - secUid: User secUid
     - uniqueId: User uniqueId
-    - At least one of secUid and uniqueId is provided, and uniqueId is preferred, that is, the username in the user's homepage link.
+    - cookie: Optional Cookie
     ### Return:
     - User profile
 
@@ -83,7 +87,7 @@ async def fetch_user_profile(request: Request,
     uniqueId = "tiktok"
     """
     try:
-        data = await TikTokWebCrawler.fetch_user_profile(secUid, uniqueId)
+        data = await TikTokWebCrawler.fetch_user_profile(secUid, uniqueId, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -105,7 +109,8 @@ async def fetch_user_post(request: Request,
                                               description="用户secUid/User secUid"),
                           cursor: int = Query(default=0, description="翻页游标/Page cursor"),
                           count: int = Query(default=35, description="每页数量/Number per page"),
-                          coverFormat: int = Query(default=2, description="封面格式/Cover format")):
+                          coverFormat: int = Query(default=2, description="封面格式/Cover format"),
+                          cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -115,6 +120,7 @@ async def fetch_user_post(request: Request,
     - cursor: 翻页游标
     - count: 每页数量
     - coverFormat: 封面格式
+    - cookie: 可选Cookie
     ### 返回:
     - 用户的作品列表
 
@@ -126,17 +132,15 @@ async def fetch_user_post(request: Request,
     - cursor: Page cursor
     - count: Number per page
     - coverFormat: Cover format
+    - cookie: Optional Cookie
     ### Return:
     - User posts
 
     # [示例/Example]
     secUid = "MS4wLjABAAAAv7iSuuXDJGDvJkmH_vz1qkDZYo1apxgzaxdBSeIuPiM"
-    cursor = 0
-    count = 35
-    coverFormat = 2
     """
     try:
-        data = await TikTokWebCrawler.fetch_user_post(secUid, cursor, count, coverFormat)
+        data = await TikTokWebCrawler.fetch_user_post(secUid, cursor, count, coverFormat, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -159,40 +163,38 @@ async def fetch_user_like(request: Request,
                               description="用户secUid/User secUid"),
                           cursor: int = Query(default=0, description="翻页游标/Page cursor"),
                           count: int = Query(default=35, description="每页数量/Number per page"),
-                          coverFormat: int = Query(default=2, description="封面格式/Cover format")):
+                          coverFormat: int = Query(default=2, description="封面格式/Cover format"),
+                          cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取用户的点赞列表
-    - 注意: 该接口需要用户点赞列表为公开状态
     ### 参数:
     - secUid: 用户secUid
     - cursor: 翻页游标
     - count: 每页数量
     - coverFormat: 封面格式
+    - cookie: 可选Cookie
     ### 返回:
     - 用户的点赞列表
 
     # [English]
     ### Purpose:
     - Get user likes
-    - Note: This interface requires that the user's like list be public
     ### Parameters:
     - secUid: User secUid
     - cursor: Page cursor
     - count: Number per page
     - coverFormat: Cover format
+    - cookie: Optional Cookie
     ### Return:
     - User likes
 
     # [示例/Example]
     secUid = "MS4wLjABAAAAq1iRXNduFZpY301UkVpJ1eQT60_NiWS9QQSeNqmNQEDJp0pOF8cpleNEdiJx5_IU"
-    cursor = 0
-    count = 35
-    coverFormat = 2
     """
     try:
-        data = await TikTokWebCrawler.fetch_user_like(secUid, cursor, count, coverFormat)
+        data = await TikTokWebCrawler.fetch_user_like(secUid, cursor, count, coverFormat, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -271,7 +273,8 @@ async def fetch_user_play_list(request: Request,
                                secUid: str = Query(example="MS4wLjABAAAAv7iSuuXDJGDvJkmH_vz1qkDZYo1apxgzaxdBSeIuPiM",
                                                    description="用户secUid/User secUid"),
                                cursor: int = Query(default=0, description="翻页游标/Page cursor"),
-                               count: int = Query(default=30, description="每页数量/Number per page")):
+                               count: int = Query(default=30, description="每页数量/Number per page"),
+                               cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -280,6 +283,7 @@ async def fetch_user_play_list(request: Request,
     - secUid: 用户secUid
     - cursor: 翻页游标
     - count: 每页数量
+    - cookie: 可选Cookie
     ### 返回:
     - 用户的播放列表
 
@@ -290,6 +294,7 @@ async def fetch_user_play_list(request: Request,
     - secUid: User secUid
     - cursor: Page cursor
     - count: Number per page
+    - cookie: Optional Cookie
     ### Return:
     - User play list
 
@@ -297,9 +302,10 @@ async def fetch_user_play_list(request: Request,
     secUid = "MS4wLjABAAAAv7iSuuXDJGDvJkmH_vz1qkDZYo1apxgzaxdBSeIuPiM"
     cursor = 0
     count = 30
+    cookie = "Your_Cookie"
     """
     try:
-        data = await TikTokWebCrawler.fetch_user_play_list(secUid, cursor, count)
+        data = await TikTokWebCrawler.fetch_user_play_list(secUid, cursor, count, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -320,7 +326,8 @@ async def fetch_user_mix(request: Request,
                          mixId: str = Query(example="7101538765474106158",
                                             description="合辑id/Mix id"),
                          cursor: int = Query(default=0, description="翻页游标/Page cursor"),
-                         count: int = Query(default=30, description="每页数量/Number per page")):
+                         count: int = Query(default=30, description="每页数量/Number per page"),
+                         cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -329,6 +336,7 @@ async def fetch_user_mix(request: Request,
     - mixId: 合辑id
     - cursor: 翻页游标
     - count: 每页数量
+    - cookie: 可选Cookie
     ### 返回:
     - 用户的合辑列表
 
@@ -339,6 +347,7 @@ async def fetch_user_mix(request: Request,
     - mixId: Mix id
     - cursor: Page cursor
     - count: Number per page
+    - cookie: Optional Cookie
     ### Return:
     - User mix list
 
@@ -346,9 +355,10 @@ async def fetch_user_mix(request: Request,
     mixId = "7101538765474106158"
     cursor = 0
     count = 30
+    cookie = "Your_Cookie"
     """
     try:
-        data = await TikTokWebCrawler.fetch_user_mix(mixId, cursor, count)
+        data = await TikTokWebCrawler.fetch_user_mix(mixId, cursor, count, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -369,7 +379,8 @@ async def fetch_post_comment(request: Request,
                              aweme_id: str = Query(example="7304809083817774382", description="作品id/Video id"),
                              cursor: int = Query(default=0, description="翻页游标/Page cursor"),
                              count: int = Query(default=20, description="每页数量/Number per page"),
-                             current_region: str = Query(default="", description="当前地区/Current region")):
+                             current_region: str = Query(default="", description="当前地区/Current region"),
+                             cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -379,6 +390,7 @@ async def fetch_post_comment(request: Request,
     - cursor: 翻页游标
     - count: 每页数量
     - current_region: 当前地区，默认为空。
+    - cookie: 可选Cookie
     ### 返回:
     - 作品的评论列表
 
@@ -390,6 +402,7 @@ async def fetch_post_comment(request: Request,
     - cursor: Page cursor
     - count: Number per page
     - current_region: Current region, default is empty.
+    - cookie: Optional Cookie
     ### Return:
     - Video comments
 
@@ -398,9 +411,10 @@ async def fetch_post_comment(request: Request,
     cursor = 0
     count = 20
     current_region = ""
+    cookie = "Your_Cookie"
     """
     try:
-        data = await TikTokWebCrawler.fetch_post_comment(aweme_id, cursor, count, current_region)
+        data = await TikTokWebCrawler.fetch_post_comment(aweme_id, cursor, count, current_region, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -423,7 +437,8 @@ async def fetch_post_comment_reply(request: Request,
                                                            description="评论id/Comment id"),
                                    cursor: int = Query(default=0, description="翻页游标/Page cursor"),
                                    count: int = Query(default=20, description="每页数量/Number per page"),
-                                   current_region: str = Query(default="", description="当前地区/Current region")):
+                                   current_region: str = Query(default="", description="当前地区/Current region"),
+                                   cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -434,6 +449,7 @@ async def fetch_post_comment_reply(request: Request,
     - cursor: 翻页游标
     - count: 每页数量
     - current_region: 当前地区，默认为空。
+    - cookie: 可选Cookie
     ### 返回:
     - 作品的评论回复列表
 
@@ -446,6 +462,7 @@ async def fetch_post_comment_reply(request: Request,
     - cursor: Page cursor
     - count: Number per page
     - current_region: Current region, default is empty.
+    - cookie: Optional Cookie
     ### Return:
     - Video comment replies
 
@@ -455,9 +472,10 @@ async def fetch_post_comment_reply(request: Request,
     cursor = 0
     count = 20
     current_region = ""
+    cookie = "Your_Cookie"
     """
     try:
-        data = await TikTokWebCrawler.fetch_post_comment_reply(item_id, comment_id, cursor, count, current_region)
+        data = await TikTokWebCrawler.fetch_post_comment_reply(item_id, comment_id, cursor, count, current_region, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -479,7 +497,8 @@ async def fetch_user_fans(request: Request,
                                               description="用户secUid/User secUid"),
                           count: int = Query(default=30, description="每页数量/Number per page"),
                           maxCursor: int = Query(default=0, description="最大游标/Max cursor"),
-                          minCursor: int = Query(default=0, description="最小游标/Min cursor")):
+                          minCursor: int = Query(default=0, description="最小游标/Min cursor"),
+                          cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -489,6 +508,7 @@ async def fetch_user_fans(request: Request,
     - count: 每页数量
     - maxCursor: 最大游标
     - minCursor: 最小游标
+    - cookie: 可选Cookie
     ### 返回:
     - 用户的粉丝列表
 
@@ -500,6 +520,7 @@ async def fetch_user_fans(request: Request,
     - count: Number per page
     - maxCursor: Max cursor
     - minCursor: Min cursor
+    - cookie: Optional Cookie
     ### Return:
     - User followers
 
@@ -508,9 +529,10 @@ async def fetch_user_fans(request: Request,
     count = 30
     maxCursor = 0
     minCursor = 0
+    cookie = "Your_Cookie"
     """
     try:
-        data = await TikTokWebCrawler.fetch_user_fans(secUid, count, maxCursor, minCursor)
+        data = await TikTokWebCrawler.fetch_user_fans(secUid, count, maxCursor, minCursor, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -532,7 +554,8 @@ async def fetch_user_follow(request: Request,
                                                 description="用户secUid/User secUid"),
                             count: int = Query(default=30, description="每页数量/Number per page"),
                             maxCursor: int = Query(default=0, description="最大游标/Max cursor"),
-                            minCursor: int = Query(default=0, description="最小游标/Min cursor")):
+                            minCursor: int = Query(default=0, description="最小游标/Min cursor"),
+                            cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -542,6 +565,7 @@ async def fetch_user_follow(request: Request,
     - count: 每页数量
     - maxCursor: 最大游标
     - minCursor: 最小游标
+    - cookie: 可选Cookie
     ### 返回:
     - 用户的关注列表
 
@@ -553,6 +577,7 @@ async def fetch_user_follow(request: Request,
     - count: Number per page
     - maxCursor: Max cursor
     - minCursor: Min cursor
+    - cookie: Optional Cookie
     ### Return:
     - User followings
 
@@ -561,9 +586,10 @@ async def fetch_user_follow(request: Request,
     count = 30
     maxCursor = 0
     minCursor = 0
+    cookie = "Your_Cookie"
     """
     try:
-        data = await TikTokWebCrawler.fetch_user_follow(secUid, count, maxCursor, minCursor)
+        data = await TikTokWebCrawler.fetch_user_follow(secUid, count, maxCursor, minCursor, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)

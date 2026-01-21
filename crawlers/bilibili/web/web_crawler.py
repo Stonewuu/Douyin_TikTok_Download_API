@@ -73,9 +73,11 @@ class BilibiliWebCrawler:
     "-------------------------------------------------------handler接口列表-------------------------------------------------------"
 
     # 获取单个视频详情信息
-    async def fetch_one_video(self, bv_id: str) -> dict:
+    async def fetch_one_video(self, bv_id: str, cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -86,9 +88,11 @@ class BilibiliWebCrawler:
         return response
 
     # 获取视频流地址
-    async def fetch_video_playurl(self, bv_id: str, cid: str, qn: str = "64") -> dict:
+    async def fetch_video_playurl(self, bv_id: str, cid: str, qn: str = "64", cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -102,14 +106,17 @@ class BilibiliWebCrawler:
         return response
 
     # 获取用户发布视频作品数据
-    async def fetch_user_post_videos(self, uid: str, pn: int) -> dict:
+    async def fetch_user_post_videos(self, uid: str, pn: int, cookie: str = "") -> dict:
         """
         :param uid: 用户uid
         :param pn: 页码
+        :param cookie: 可选Cookie
         :return:
         """
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -123,9 +130,11 @@ class BilibiliWebCrawler:
         return response
 
     # 获取用户所有收藏夹信息
-    async def fetch_collect_folders(self, uid: str) -> dict:
+    async def fetch_collect_folders(self, uid: str, cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -138,14 +147,17 @@ class BilibiliWebCrawler:
         return result_dict
 
     # 获取指定收藏夹内视频数据
-    async def fetch_folder_videos(self, folder_id: str, pn: int) -> dict:
+    async def fetch_folder_videos(self, folder_id: str, pn: int, cookie: str = "") -> dict:
         """
         :param folder_id: 收藏夹id-- 可从<获取用户所有收藏夹信息>获得
         :param pn: 页码
+        :param cookie: 可选Cookie
         :return:
         """
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         # 发送请求，获取请求响应结果
@@ -155,9 +167,11 @@ class BilibiliWebCrawler:
         return response
 
     # 获取指定用户的信息
-    async def fetch_user_profile(self, uid: str) -> dict:
+    async def fetch_user_profile(self, uid: str, cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -171,9 +185,11 @@ class BilibiliWebCrawler:
         return response
 
     # 获取综合热门视频信息
-    async def fetch_com_popular(self, pn: int) -> dict:
+    async def fetch_com_popular(self, pn: int, cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -187,11 +203,13 @@ class BilibiliWebCrawler:
         return response
 
     # 获取指定视频的评论
-    async def fetch_video_comments(self, bv_id: str, pn: int) -> dict:
+    async def fetch_video_comments(self, bv_id: str, pn: int, cookie: str = "") -> dict:
         # 评论排序 -- 1:按点赞数排序. 0:按时间顺序排序
         sort = 1
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -202,15 +220,18 @@ class BilibiliWebCrawler:
         return response
 
     # 获取视频下指定评论的回复
-    async def fetch_comment_reply(self, bv_id: str, pn: int, rpid: str) -> dict:
+    async def fetch_comment_reply(self, bv_id: str, pn: int, rpid: str, cookie: str = "") -> dict:
         """
         :param bv_id: 目标视频bv号
         :param pn: 页码
         :param rpid: 目标评论id，可通过fetch_video_comments获得
+        :param cookie: 可选Cookie
         :return:
         """
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -221,9 +242,11 @@ class BilibiliWebCrawler:
             return response
 
     # 获取指定用户动态
-    async def fetch_user_dynamic(self, uid: str, offset: str) -> dict:
+    async def fetch_user_dynamic(self, uid: str, offset: str, cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -238,9 +261,11 @@ class BilibiliWebCrawler:
         return response
 
     # 获取视频实时弹幕
-    async def fetch_video_danmaku(self, cid: str):
+    async def fetch_video_danmaku(self, cid: str, cookie: str = ""):
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -251,9 +276,11 @@ class BilibiliWebCrawler:
         return response.text
 
     # 获取指定直播间信息
-    async def fetch_live_room_detail(self, room_id: str) -> dict:
+    async def fetch_live_room_detail(self, room_id: str, cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -264,9 +291,11 @@ class BilibiliWebCrawler:
         return response
 
     # 获取指定直播间视频流
-    async def fetch_live_videos(self, room_id: str) -> dict:
+    async def fetch_live_videos(self, room_id: str, cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -277,9 +306,11 @@ class BilibiliWebCrawler:
         return response
 
     # 获取指定分区正在直播的主播
-    async def fetch_live_streamers(self, area_id: str, pn: int):
+    async def fetch_live_streamers(self, area_id: str, pn: int, cookie: str = ""):
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -297,9 +328,11 @@ class BilibiliWebCrawler:
         return aid
 
     # 通过bv号获得视频分p信息
-    async def fetch_video_parts(self, bv_id: str) -> str:
+    async def fetch_video_parts(self, bv_id: str, cookie: str = "") -> str:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -310,9 +343,11 @@ class BilibiliWebCrawler:
         return response
 
     # 获取所有直播分区列表
-    async def fetch_all_live_areas(self) -> dict:
+    async def fetch_all_live_areas(self, cookie: str = "") -> dict:
         # 获取请求头信息
         kwargs = await self.get_bilibili_headers()
+        if cookie:
+            kwargs["headers"]["cookie"] = cookie
         # 创建基础爬虫对象
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:

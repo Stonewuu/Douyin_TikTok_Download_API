@@ -66,12 +66,12 @@ class HybridCrawler:
         else:
             raise ValueError(f"Cannot extract BV ID from URL: {url}")
 
-    async def hybrid_parsing_single_video(self, url: str, minimal: bool = False):
+    async def hybrid_parsing_single_video(self, url: str, minimal: bool = False, cookie: str = ""):
         # 解析抖音视频/Parse Douyin video
         if "douyin" in url:
             platform = "douyin"
             aweme_id = await self.DouyinWebCrawler.get_aweme_id(url)
-            data = await self.DouyinWebCrawler.fetch_one_video(aweme_id)
+            data = await self.DouyinWebCrawler.fetch_one_video(aweme_id, cookie)
             data = data.get("aweme_detail")
             # $.aweme_detail.aweme_type
             aweme_type = data.get("aweme_type")
@@ -91,7 +91,7 @@ class HybridCrawler:
         elif "bilibili" in url or "b23.tv" in url:
             platform = "bilibili"
             aweme_id = await self.get_bilibili_bv_id(url)  # BV号作为统一的video_id
-            response = await self.BilibiliWebCrawler.fetch_one_video(aweme_id)
+            response = await self.BilibiliWebCrawler.fetch_one_video(aweme_id, cookie)
             data = response.get('data', {})  # 提取data部分
             # Bilibili只有视频类型，aweme_type设为0(video)
             aweme_type = 0
@@ -265,7 +265,7 @@ class HybridCrawler:
                 cid = data.get('cid')  # 获取cid
                 if cid:
                     # 获取播放链接，cid需要转换为字符串
-                    playurl_data = await self.BilibiliWebCrawler.fetch_video_playurl(aweme_id, str(cid))
+                    playurl_data = await self.BilibiliWebCrawler.fetch_video_playurl(aweme_id, str(cid), "64", cookie)
                     # 从播放数据中提取URL
                     dash = playurl_data.get('data', {}).get('dash', {})
                     video_list = dash.get('video', [])

@@ -11,13 +11,15 @@ BilibiliWebCrawler = BilibiliWebCrawler()
 # 获取单个视频详情信息
 @router.get("/fetch_one_video", response_model=ResponseModel, summary="获取单个视频详情信息/Get single video data")
 async def fetch_one_video(request: Request,
-                          bv_id: str = Query(example="BV1M1421t7hT", description="作品id/Video id")):
+                          bv_id: str = Query(example="BV1M1421t7hT", description="作品id/Video id"),
+                          cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取单个视频详情信息
     ### 参数:
     - bv_id: 作品id
+    - cookie: 可选Cookie
     ### 返回:
     - 视频详情信息
 
@@ -26,6 +28,7 @@ async def fetch_one_video(request: Request,
     - Get single video data
     ### Parameters:
     - bv_id: Video id
+    - cookie: Optional Cookie
     ### Return:
     - Video data
 
@@ -33,7 +36,7 @@ async def fetch_one_video(request: Request,
     bv_id = "BV1M1421t7hT"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_one_video(bv_id)
+        data = await BilibiliWebCrawler.fetch_one_video(bv_id, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -50,7 +53,8 @@ async def fetch_one_video(request: Request,
 @router.get("/fetch_video_playurl", response_model=ResponseModel, summary="获取视频流地址/Get video playurl")
 async def fetch_one_video(request: Request,
                           bv_id: str = Query(example="BV1y7411Q7Eq", description="作品id/Video id"),
-                          cid:str = Query(example="171776208", description="作品cid/Video cid")):
+                          cid:str = Query(example="171776208", description="作品cid/Video cid"),
+                          cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -58,6 +62,7 @@ async def fetch_one_video(request: Request,
     ### 参数:
     - bv_id: 作品id
     - cid: 作品cid
+    - cookie: 可选Cookie
     ### 返回:
     - 视频流地址
 
@@ -67,6 +72,7 @@ async def fetch_one_video(request: Request,
     ### Parameters:
     - bv_id: Video id
     - cid: Video cid
+    - cookie: Optional Cookie
     ### Return:
     - Video playurl
 
@@ -75,7 +81,7 @@ async def fetch_one_video(request: Request,
     cid = "171776208"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_video_playurl(bv_id, cid)
+        data = await BilibiliWebCrawler.fetch_video_playurl(bv_id, cid, "64", cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -93,7 +99,8 @@ async def fetch_one_video(request: Request,
             summary="获取用户主页作品数据/Get user homepage video data")
 async def fetch_user_post_videos(request: Request,
                                  uid: str = Query(example="178360345", description="用户UID"),
-                                 pn: int = Query(default=1, description="页码/Page number"),):
+                                 pn: int = Query(default=1, description="页码/Page number"),
+                                 cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -101,6 +108,7 @@ async def fetch_user_post_videos(request: Request,
     ### 参数:
     - uid: 用户UID
     - pn: 页码
+    - cookie: 可选Cookie
     ### 返回:
     - 用户发布的视频数据
 
@@ -110,6 +118,7 @@ async def fetch_user_post_videos(request: Request,
     ### Parameters:
     - uid: User UID
     - pn: Page number
+    - cookie: Optional Cookie
     ### Return:
     - User posted video data
 
@@ -118,7 +127,7 @@ async def fetch_user_post_videos(request: Request,
     pn = 1
     """
     try:
-        data = await BilibiliWebCrawler.fetch_user_post_videos(uid, pn)
+        data = await BilibiliWebCrawler.fetch_user_post_videos(uid, pn, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -135,13 +144,15 @@ async def fetch_user_post_videos(request: Request,
 @router.get("/fetch_collect_folders", response_model=ResponseModel,
             summary="获取用户所有收藏夹信息/Get user collection folders")
 async def fetch_collect_folders(request: Request,
-                                uid: str = Query(example="178360345", description="用户UID")):
+                                uid: str = Query(example="178360345", description="用户UID"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取用户收藏作品数据
     ### 参数:
     - uid: 用户UID
+    - cookie: 可选Cookie
     ### 返回:
     - 用户收藏夹信息
 
@@ -150,6 +161,7 @@ async def fetch_collect_folders(request: Request,
     - Get user collection folders
     ### Parameters:
     - uid: User UID
+    - cookie: Optional Cookie
     ### Return:
     - user collection folders
 
@@ -157,7 +169,7 @@ async def fetch_collect_folders(request: Request,
     uid = "178360345"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_collect_folders(uid)
+        data = await BilibiliWebCrawler.fetch_collect_folders(uid, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -176,15 +188,17 @@ async def fetch_collect_folders(request: Request,
 async def fetch_user_collection_videos(request: Request,
                                        folder_id: str = Query(example="1756059545",
                                                               description="收藏夹id/collection folder id"),
-                                       pn: int = Query(default=1, description="页码/Page number")
+                                       pn: int = Query(default=1, description="页码/Page number"),
+                                       cookie: str = Query(default="", description="可选Cookie/Optional Cookie")
                                        ):
     """
     # [中文]
     ### 用途:
     - 获取指定收藏夹内视频数据
     ### 参数:
-    - folder_id: 用户UID
+    - folder_id: 收藏夹id
     - pn: 页码
+    - cookie: 可选Cookie
     ### 返回:
     - 指定收藏夹内视频数据
 
@@ -194,6 +208,7 @@ async def fetch_user_collection_videos(request: Request,
     ### Parameters:
     - folder_id: collection folder id
     - pn: Page number
+    - cookie: Optional Cookie
     ### Return:
     - video data from collection folder
 
@@ -202,7 +217,7 @@ async def fetch_user_collection_videos(request: Request,
     pn = 1
     """
     try:
-        data = await BilibiliWebCrawler.fetch_folder_videos(folder_id, pn)
+        data = await BilibiliWebCrawler.fetch_folder_videos(folder_id, pn, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -219,13 +234,15 @@ async def fetch_user_collection_videos(request: Request,
 @router.get("/fetch_user_profile", response_model=ResponseModel,
             summary="获取指定用户的信息/Get information of specified user")
 async def fetch_collect_folders(request: Request,
-                                uid: str = Query(example="178360345", description="用户UID")):
+                                uid: str = Query(example="178360345", description="用户UID"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取指定用户的信息
     ### 参数:
     - uid: 用户UID
+    - cookie: 可选Cookie
     ### 返回:
     - 指定用户的个人信息
 
@@ -234,6 +251,7 @@ async def fetch_collect_folders(request: Request,
     - Get information of specified user
     ### Parameters:
     - uid: User UID
+    - cookie: Optional Cookie
     ### Return:
     - information of specified user
 
@@ -241,7 +259,7 @@ async def fetch_collect_folders(request: Request,
     uid = "178360345"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_user_profile(uid)
+        data = await BilibiliWebCrawler.fetch_user_profile(uid, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -258,13 +276,15 @@ async def fetch_collect_folders(request: Request,
 @router.get("/fetch_com_popular", response_model=ResponseModel,
             summary="获取综合热门视频信息/Get comprehensive popular video information")
 async def fetch_collect_folders(request: Request,
-                                pn: int = Query(default=1, description="页码/Page number")):
+                                pn: int = Query(default=1, description="页码/Page number"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取综合热门视频信息
     ### 参数:
     - pn: 页码
+    - cookie: 可选Cookie
     ### 返回:
     - 综合热门视频信息
 
@@ -273,6 +293,7 @@ async def fetch_collect_folders(request: Request,
     - Get comprehensive popular video information
     ### Parameters:
     - pn: Page number
+    - cookie: Optional Cookie
     ### Return:
     - comprehensive popular video information
 
@@ -280,7 +301,7 @@ async def fetch_collect_folders(request: Request,
     pn = 1
     """
     try:
-        data = await BilibiliWebCrawler.fetch_com_popular(pn)
+        data = await BilibiliWebCrawler.fetch_com_popular(pn, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -298,7 +319,8 @@ async def fetch_collect_folders(request: Request,
             summary="获取指定视频的评论/Get comments on the specified video")
 async def fetch_collect_folders(request: Request,
                                 bv_id: str = Query(example="BV1M1421t7hT", description="作品id/Video id"),
-                                pn: int = Query(default=1, description="页码/Page number")):
+                                pn: int = Query(default=1, description="页码/Page number"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -306,6 +328,7 @@ async def fetch_collect_folders(request: Request,
     ### 参数:
     - bv_id: 作品id
     - pn: 页码
+    - cookie: 可选Cookie
     ### 返回:
     - 指定视频的评论数据
 
@@ -315,6 +338,7 @@ async def fetch_collect_folders(request: Request,
     ### Parameters:
     - bv_id: Video id
     - pn: Page number
+    - cookie: Optional Cookie
     ### Return:
     - comments of the specified video
 
@@ -323,7 +347,7 @@ async def fetch_collect_folders(request: Request,
     pn = 1
     """
     try:
-        data = await BilibiliWebCrawler.fetch_video_comments(bv_id, pn)
+        data = await BilibiliWebCrawler.fetch_video_comments(bv_id, pn, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -342,7 +366,8 @@ async def fetch_collect_folders(request: Request,
 async def fetch_collect_folders(request: Request,
                                 bv_id: str = Query(example="BV1M1421t7hT", description="作品id/Video id"),
                                 pn: int = Query(default=1, description="页码/Page number"),
-                                rpid: str = Query(example="237109455120", description="回复id/Reply id")):
+                                rpid: str = Query(example="237109455120", description="回复id/Reply id"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -351,6 +376,7 @@ async def fetch_collect_folders(request: Request,
     - bv_id: 作品id
     - pn: 页码
     - rpid: 回复id
+    - cookie: 可选Cookie
     ### 返回:
     - 指定评论的回复数据
 
@@ -361,6 +387,7 @@ async def fetch_collect_folders(request: Request,
     - bv_id: Video id
     - pn: Page number
     - rpid: Reply id
+    - cookie: Optional Cookie
     ### Return:
     - Reply of the specified comment
 
@@ -370,7 +397,7 @@ async def fetch_collect_folders(request: Request,
     rpid = "237109455120"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_comment_reply(bv_id, pn, rpid)
+        data = await BilibiliWebCrawler.fetch_comment_reply(bv_id, pn, rpid, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -389,7 +416,8 @@ async def fetch_collect_folders(request: Request,
 async def fetch_collect_folders(request: Request,
                                 uid: str = Query(example="16015678", description="用户UID"),
                                 offset: str = Query(default="", example="953154282154098691",
-                                                    description="开始索引/offset")):
+                                                    description="开始索引/offset"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -397,6 +425,7 @@ async def fetch_collect_folders(request: Request,
     ### 参数:
     - uid: 用户UID
     - offset: 开始索引
+    - cookie: 可选Cookie
     ### 返回:
     - 指定用户动态数据
 
@@ -406,6 +435,7 @@ async def fetch_collect_folders(request: Request,
     ### Parameters:
     - uid: User UID
     - offset: offset
+    - cookie: Optional Cookie
     ### Return:
     - dynamic information of specified user
 
@@ -414,7 +444,7 @@ async def fetch_collect_folders(request: Request,
     offset = "953154282154098691"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_user_dynamic(uid, offset)
+        data = await BilibiliWebCrawler.fetch_user_dynamic(uid, offset, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -430,13 +460,15 @@ async def fetch_collect_folders(request: Request,
 # 获取视频实时弹幕
 @router.get("/fetch_video_danmaku", response_model=ResponseModel, summary="获取视频实时弹幕/Get Video Danmaku")
 async def fetch_one_video(request: Request,
-                          cid: str = Query(example="1639235405", description="作品cid/Video cid")):
+                          cid: str = Query(example="1639235405", description="作品cid/Video cid"),
+                          cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取视频实时弹幕
     ### 参数:
     - cid: 作品cid
+    - cookie: 可选Cookie
     ### 返回:
     - 视频实时弹幕
 
@@ -445,6 +477,7 @@ async def fetch_one_video(request: Request,
     - Get Video Danmaku
     ### Parameters:
     - cid: Video cid
+    - cookie: Optional Cookie
     ### Return:
     - Video Danmaku
 
@@ -452,7 +485,7 @@ async def fetch_one_video(request: Request,
     cid = "1639235405"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_video_danmaku(cid)
+        data = await BilibiliWebCrawler.fetch_video_danmaku(cid, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -469,13 +502,15 @@ async def fetch_one_video(request: Request,
 @router.get("/fetch_live_room_detail", response_model=ResponseModel,
             summary="获取指定直播间信息/Get information of specified live room")
 async def fetch_collect_folders(request: Request,
-                                room_id: str = Query(example="22816111", description="直播间ID/Live room ID")):
+                                room_id: str = Query(example="22816111", description="直播间ID/Live room ID"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取指定直播间信息
     ### 参数:
     - room_id: 直播间ID
+    - cookie: 可选Cookie
     ### 返回:
     - 指定直播间信息
 
@@ -484,6 +519,7 @@ async def fetch_collect_folders(request: Request,
     - Get information of specified live room
     ### Parameters:
     - room_id: Live room ID
+    - cookie: Optional Cookie
     ### Return:
     - information of specified live room
 
@@ -491,7 +527,7 @@ async def fetch_collect_folders(request: Request,
     room_id = "22816111"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_live_room_detail(room_id)
+        data = await BilibiliWebCrawler.fetch_live_room_detail(room_id, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -508,13 +544,15 @@ async def fetch_collect_folders(request: Request,
 @router.get("/fetch_live_videos", response_model=ResponseModel,
             summary="获取直播间视频流/Get live video data of specified room")
 async def fetch_collect_folders(request: Request,
-                                room_id: str = Query(example="1815229528", description="直播间ID/Live room ID")):
+                                room_id: str = Query(example="1815229528", description="直播间ID/Live room ID"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取指定直播间视频流
     ### 参数:
     - room_id: 直播间ID
+    - cookie: 可选Cookie
     ### 返回:
     - 指定直播间视频流
 
@@ -523,6 +561,7 @@ async def fetch_collect_folders(request: Request,
     - Get live video data of specified room
     ### Parameters:
     - room_id: Live room ID
+    - cookie: Optional Cookie
     ### Return:
     - live video data of specified room
 
@@ -530,7 +569,7 @@ async def fetch_collect_folders(request: Request,
     room_id = "1815229528"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_live_videos(room_id)
+        data = await BilibiliWebCrawler.fetch_live_videos(room_id, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -548,7 +587,8 @@ async def fetch_collect_folders(request: Request,
             summary="获取指定分区正在直播的主播/Get live streamers of specified live area")
 async def fetch_collect_folders(request: Request,
                                 area_id: str = Query(example="9", description="直播分区id/Live area ID"),
-                                pn: int = Query(default=1, description="页码/Page number")):
+                                pn: int = Query(default=1, description="页码/Page number"),
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
@@ -556,6 +596,7 @@ async def fetch_collect_folders(request: Request,
     ### 参数:
     - area_id: 直播分区id
     - pn: 页码
+    - cookie: 可选Cookie
     ### 返回:
     - 指定分区正在直播的主播
 
@@ -565,6 +606,7 @@ async def fetch_collect_folders(request: Request,
     ### Parameters:
     - area_id: Live area ID
     - pn: Page number
+    - cookie: Optional Cookie
     ### Return:
     - live streamers of specified live area
 
@@ -573,7 +615,7 @@ async def fetch_collect_folders(request: Request,
     pn = 1
     """
     try:
-        data = await BilibiliWebCrawler.fetch_live_streamers(area_id, pn)
+        data = await BilibiliWebCrawler.fetch_live_streamers(area_id, pn, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -589,12 +631,14 @@ async def fetch_collect_folders(request: Request,
 # 获取所有直播分区列表
 @router.get("/fetch_all_live_areas", response_model=ResponseModel,
             summary="获取所有直播分区列表/Get a list of all live areas")
-async def fetch_collect_folders(request: Request,):
+async def fetch_collect_folders(request: Request,
+                                cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 获取所有直播分区列表
     ### 参数:
+    - cookie: 可选Cookie
     ### 返回:
     - 所有直播分区列表
 
@@ -602,13 +646,14 @@ async def fetch_collect_folders(request: Request,):
     ### Purpose:
     - Get a list of all live areas
     ### Parameters:
+    - cookie: Optional Cookie
     ### Return:
     - list of all live areas
 
     # [示例/Example]
     """
     try:
-        data = await BilibiliWebCrawler.fetch_all_live_areas()
+        data = await BilibiliWebCrawler.fetch_all_live_areas(cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)
@@ -662,13 +707,15 @@ async def fetch_one_video(request: Request,
 # 通过bv号获得视频分p信息
 @router.get("/fetch_video_parts", response_model=ResponseModel, summary="通过bv号获得视频分p信息/Get Video Parts By bvid")
 async def fetch_one_video(request: Request,
-                          bv_id: str = Query(example="BV1vf421i7hV", description="作品id/Video id")):
+                          bv_id: str = Query(example="BV1vf421i7hV", description="作品id/Video id"),
+                          cookie: str = Query(default="", description="可选Cookie/Optional Cookie")):
     """
     # [中文]
     ### 用途:
     - 通过bv号获得视频分p信息
     ### 参数:
     - bv_id: 作品id
+    - cookie: 可选Cookie
     ### 返回:
     - 视频分p信息
 
@@ -677,6 +724,7 @@ async def fetch_one_video(request: Request,
     - Get Video Parts By bvid
     ### Parameters:
     - bv_id: Video id
+    - cookie: Optional Cookie
     ### Return:
     - Video Parts
 
@@ -684,7 +732,7 @@ async def fetch_one_video(request: Request,
     bv_id = "BV1vf421i7hV"
     """
     try:
-        data = await BilibiliWebCrawler.fetch_video_parts(bv_id)
+        data = await BilibiliWebCrawler.fetch_video_parts(bv_id, cookie)
         return ResponseModel(code=200,
                              router=request.url.path,
                              data=data)

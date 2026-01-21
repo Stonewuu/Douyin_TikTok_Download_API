@@ -86,9 +86,12 @@ class DouyinWebCrawler:
     "-------------------------------------------------------handler接口列表-------------------------------------------------------"
 
     # 获取单个作品数据
-    async def fetch_one_video(self, aweme_id: str):
+    async def fetch_one_video(self, aweme_id: str, cookie: str = ""):
         # 获取抖音的实时Cookie
         kwargs = await self.get_douyin_headers()
+        # 如果传入了cookie，则覆盖默认配置
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         # 创建一个基础爬虫
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
@@ -110,8 +113,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取用户发布作品数据
-    async def fetch_user_post_videos(self, sec_user_id: str, max_cursor: int, count: int):
+    async def fetch_user_post_videos(self, sec_user_id: str, max_cursor: int, count: int, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = UserPost(sec_user_id=sec_user_id, max_cursor=max_cursor, count=count)
@@ -130,8 +135,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取用户喜欢作品数据
-    async def fetch_user_like_videos(self, sec_user_id: str, max_cursor: int, count: int):
+    async def fetch_user_like_videos(self, sec_user_id: str, max_cursor: int, count: int, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = UserLike(sec_user_id=sec_user_id, max_cursor=max_cursor, count=count)
@@ -162,8 +169,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取用户合辑作品数据
-    async def fetch_user_mix_videos(self, mix_id: str, cursor: int = 0, count: int = 20):
+    async def fetch_user_mix_videos(self, mix_id: str, cursor: int = 0, count: int = 20, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = UserMix(mix_id=mix_id, cursor=cursor, count=count)
@@ -174,8 +183,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取用户直播流数据
-    async def fetch_user_live_videos(self, webcast_id: str, room_id_str=""):
+    async def fetch_user_live_videos(self, webcast_id: str, room_id_str="", cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = UserLive(web_rid=webcast_id, room_id_str=room_id_str)
@@ -186,8 +197,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取指定用户的直播流数据
-    async def fetch_user_live_videos_by_room_id(self, room_id: str):
+    async def fetch_user_live_videos_by_room_id(self, room_id: str, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = UserLive2(room_id=room_id)
@@ -198,8 +211,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取直播间送礼用户排行榜
-    async def fetch_live_gift_ranking(self, room_id: str, rank_type: int = 30):
+    async def fetch_live_gift_ranking(self, room_id: str, rank_type: int = 30, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = LiveRoomRanking(room_id=room_id, rank_type=rank_type)
@@ -210,8 +225,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取指定用户的信息
-    async def handler_user_profile(self, sec_user_id: str):
+    async def handler_user_profile(self, sec_user_id: str, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = UserProfile(sec_user_id=sec_user_id)
@@ -222,8 +239,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取指定视频的评论数据
-    async def fetch_video_comments(self, aweme_id: str, cursor: int = 0, count: int = 20):
+    async def fetch_video_comments(self, aweme_id: str, cursor: int = 0, count: int = 20, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = PostComments(aweme_id=aweme_id, cursor=cursor, count=count)
@@ -234,8 +253,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取指定视频的评论回复数据
-    async def fetch_video_comments_reply(self, item_id: str, comment_id: str, cursor: int = 0, count: int = 20):
+    async def fetch_video_comments_reply(self, item_id: str, comment_id: str, cursor: int = 0, count: int = 20, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = PostCommentsReply(item_id=item_id, comment_id=comment_id, cursor=cursor, count=count)
@@ -246,8 +267,10 @@ class DouyinWebCrawler:
         return response
 
     # 获取抖音热榜数据
-    async def fetch_hot_search_result(self):
+    async def fetch_hot_search_result(self, cookie: str = ""):
         kwargs = await self.get_douyin_headers()
+        if cookie:
+            kwargs["headers"]["Cookie"] = cookie
         base_crawler = BaseCrawler(proxies=kwargs["proxies"], crawler_headers=kwargs["headers"])
         async with base_crawler as crawler:
             params = BaseRequestModel()
