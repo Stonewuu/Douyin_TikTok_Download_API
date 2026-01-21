@@ -2,7 +2,7 @@ version: "3.9"  # Docker Compose 文件版本
 
 services:  # 定义服务列表
   douyin_tiktok_download_api:  # 服务名称
-    image: evil0ctal/douyin_tiktok_download_api  # 使用的 Docker 镜像
+    image: stonewu/douyin_tiktok_download_api  # 使用的 Docker 镜像
     network_mode: host  # 使用主机网络模式
     container_name: douyin_tiktok_download_api  # 容器名称
     restart: always  # 容器退出后总是重启

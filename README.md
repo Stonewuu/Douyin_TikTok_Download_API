@@ -7,6 +7,28 @@
 
 [English](./README.en.md) | [简体中文](./README.md)
 
+> 🔀 **本仓库 Fork 自 [Evil0ctal/Douyin_TikTok_Download_API](https://github.com/Evil0ctal/Douyin_TikTok_Download_API)**，感谢原作者的开源贡献！
+
+### ✨ 新增功能：API Cookie Override
+
+本 Fork 版本新增了 **API Cookie 覆盖** 功能，允许在 API 请求中传入自定义 Cookie，覆盖 `config.yaml` 中的默认配置。
+
+**使用示例：**
+```bash
+# 不带 cookie（使用配置文件默认值）
+GET /api/douyin/web/fetch_one_video?aweme_id=7372484719365098803
+
+# 带自定义 cookie（覆盖默认值）
+GET /api/douyin/web/fetch_one_video?aweme_id=7372484719365098803&cookie=YOUR_CUSTOM_COOKIE
+```
+
+**适用场景：**
+- 多账号并发请求
+- 动态切换 Cookie 无需重启服务
+- 按请求级别隔离 Cookie 配置
+
+---
+
 🚀「Douyin_TikTok_Download_API」是一个开箱即用的高性能异步[抖音](https://www.douyin.com)|[TikTok](https://www.tiktok.com)|[Bilibili](https://www.bilibili.com)数据爬取工具，支持API调用，在线批量解析及下载。
 
 [![GitHub license](https://img.shields.io/github/license/Evil0ctal/Douyin_TikTok_Download_API?style=flat-square)](LICENSE)
